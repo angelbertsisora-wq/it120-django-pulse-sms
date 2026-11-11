@@ -1,0 +1,20 @@
+{% extends "sms_app/base.html" %}
+
+{% block title %}Message History{% endblock %}
+
+{% block content %}
+<section class="hero-block">
+  <p class="eyebrow">Audit trail</p>
+  <h1>SMS message history</h1>
+  <p class="lead-text">Each row is a send attempt: recipient, body, status, Twilio SID (if any), error detail, and timestamp.</p>
+  <p><a class="text-link" href="{% url 'sms_app:send' %}">← Back to compose</a></p>
+</section>
+
+<section class="panel" aria-labelledby="history-heading">
+  <div class="panel-head">
+    <h2 id="history-heading">All recent attempts</h2>
+    <p>Showing up to 100 newest records from SQLite.</p>
+  </div>
+  {% include "sms_app/_history_table.html" with history=history empty_message="History is empty. Messages you send will appear here." %}
+</section>
+{% endblock %}

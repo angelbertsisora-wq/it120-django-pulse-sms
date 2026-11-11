@@ -1,0 +1,69 @@
+{% extends "sms_app/base.html" %}
+{% load static %}
+
+{% block title %}Send SMS{% endblock %}
+
+{% block content %}
+<section class="hero-block">
+  <p class="eyebrow">Group Lab Assignment</p>
+  <h1>Send an SMS</h1>
+  <p class="lead-text">Enter an E.164 phone number and message. On success the message is <em>submitted/queued</em> with Twilio — not confirmed delivered unless delivery status is verified separately.</p>
+</section>
+
+<div class="layout-grid">
+  <section class="panel" aria-labelledby="compose-heading">
+    <div class="panel-head">
+      <h2 id="compose-heading">Compose</h2>
+      <p>Required fields are validated before any send attempt.</p>
+    </div>
+
+    <form method="post" novalidate class="sms-form">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label for="{{ form.phone_number.id_for_label }}" class="form-label">{{ form.phone_number.label }}</label>
+        {{ form.phone_number }}
+        {% if form.phone_number.help_text %}
+          <div class="form-text">{{ form.phone_number.help_text }}</div>
+        {% endif %}
+        {% for error in form.phone_number.errors %}
+          <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <div class="mb-3">
+        <label for="{{ form.message.id_for_label }}" class="form-label">{{ form.message.label }}</label>
+        {{ form.message }}
+        <div class="char-meter" aria-live="polite">
+          <span id="char-count">0</span> / 160 characters
+          <span class="char-hint" id="char-hint">~1 SMS segment (GSM-7)</span>
+        </div>
+        {% if form.message.help_text %}
+          <div class="form-text">{{ form.message.help_text }}</div>
+        {% endif %}
+        {% for error in form.message.errors %}
+          <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+      </div>
+
+      <button type="submit" class="btn btn-send">Send SMS</button>
+    </form>
+  </section>
+
+  <section class="panel" aria-labelledby="recent-heading">
+    <div class="panel-head panel-head-row">
+      <div>
+        <h2 id="recent-heading">Recent history</h2>
+        <p>Last 25 send attempts (queued, failed, or demo).</p>
+      </div>
+      <a class="text-link" href="{% url 'sms_app:history' %}">View all</a>
+    </div>
+
+    {% include "sms_app/_history_table.html" with history=history empty_message="No messages yet. Send your first SMS to see it here." %}
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'sms_app/js/char_counter.js' %}"></script>
+{% endblock %}

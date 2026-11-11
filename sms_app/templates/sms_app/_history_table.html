@@ -1,0 +1,36 @@
+{% if history %}
+  <div class="table-responsive history-wrap">
+    <table class="table history-table align-middle mb-0">
+      <thead>
+        <tr>
+          <th scope="col">When</th>
+          <th scope="col">To</th>
+          <th scope="col">Message</th>
+          <th scope="col">Status</th>
+          <th scope="col">SID / Error</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in history %}
+          <tr>
+            <td class="mono nowrap">{{ item.created_at|date:"Y-m-d H:i" }}</td>
+            <td class="mono">{{ item.to_number }}</td>
+            <td class="msg-cell">{{ item.body|truncatechars:80 }}</td>
+            <td>
+              <span class="status-pill status-{{ item.status }}">{{ item.get_status_display }}</span>
+            </td>
+            <td class="mono detail-cell">
+              {% if item.twilio_sid %}<div>{{ item.twilio_sid }}</div>{% endif %}
+              {% if item.error_detail %}<div class="error-text">{{ item.error_detail }}</div>{% endif %}
+              {% if not item.twilio_sid and not item.error_detail %}—{% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="empty-state">
+    <p>{{ empty_message }}</p>
+  </div>
+{% endif %}
