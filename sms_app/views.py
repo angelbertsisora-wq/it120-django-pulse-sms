@@ -4,7 +4,7 @@ from django.views.decorators.http import require_http_methods
 
 from .forms import SMSForm
 from .models import SMSMessage
-from .services import send_sms
+from .services import refresh_queued_statuses, send_sms
 
 
 @require_http_methods(["GET", "POST"])
@@ -23,6 +23,7 @@ def send_sms_view(request):
                 status=result.status,
                 twilio_sid=result.sid,
                 error_detail=result.error_detail,
+                is_demo=result.is_demo,
             )
 
             if result.success:
@@ -33,6 +34,8 @@ def send_sms_view(request):
             return redirect("sms_app:send")
         messages.error(request, "Please fix the errors below and try again.")
 
+    # Pull later TextBee results (sent/failed/delivered) into local history.
+    refresh_queued_statuses()
     history = SMSMessage.objects.all()[:25]
     return render(
         request,
@@ -46,5 +49,6 @@ def send_sms_view(request):
 
 @require_http_methods(["GET"])
 def history_view(request):
+    refresh_queued_statuses(limit=100)
     history = SMSMessage.objects.all()[:100]
     return render(request, "sms_app/history.html", {"history": history})

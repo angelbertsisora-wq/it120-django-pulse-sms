@@ -6,6 +6,7 @@
           <th scope="col">When</th>
           <th scope="col">To</th>
           <th scope="col">Message</th>
+          <th scope="col">Mode</th>
           <th scope="col">Status</th>
           <th scope="col">SID / Error</th>
         </tr>
@@ -16,6 +17,13 @@
             <td class="mono nowrap">{{ item.created_at|date:"Y-m-d H:i" }}</td>
             <td class="mono">{{ item.to_number }}</td>
             <td class="msg-cell">{{ item.body|truncatechars:80 }}</td>
+            <td>
+              {% if item.is_demo %}
+                <span class="mode-pill mode-demo">Demo</span>
+              {% else %}
+                <span class="mode-pill mode-live">Actual</span>
+              {% endif %}
+            </td>
             <td>
               <span class="status-pill status-{{ item.status }}">{{ item.get_status_display }}</span>
             </td>

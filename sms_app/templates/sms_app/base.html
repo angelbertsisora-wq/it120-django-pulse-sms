@@ -19,7 +19,7 @@
           <span class="brand-mark" aria-hidden="true"></span>
           <span class="brand-text">
             <strong>PulseSMS</strong>
-            <small>IT 120 · Twilio Django Lab</small>
+            <small>IT 120 · TextBee Django Lab</small>
           </span>
         </a>
         <nav class="site-nav">
@@ -32,11 +32,22 @@
     <main class="container py-4 py-md-5">
       {% if demo_mode_enabled %}
         <div class="alert alert-info banner" role="status">
-          <strong>Demo mode is on.</strong> Forms are validated and history is saved, but Twilio is not called.
+          <strong>Mode: Demo (optional / development only).</strong>
+          Forms are validated and history is saved as <em>Demo</em>, but TextBee is <strong>not</strong> called.
+          For real SMS, set <code>DEMO_MODE=false</code> and configure TextBee credentials in <code>.env</code>.
         </div>
-      {% elif not twilio_is_configured %}
+      {% elif provider_is_configured %}
+        <div class="alert alert-success banner mode-live" role="status">
+          <strong>Mode: Actual TextBee (default).</strong>
+          Valid sends call the TextBee gateway API. Your Android device must stay online.
+          Acceptance means queued for the phone — not automatically “delivered.”
+        </div>
+      {% else %}
         <div class="alert alert-warning banner" role="status">
-          <strong>Twilio is not configured.</strong> Copy <code>.env.example</code> to <code>.env</code> and set your credentials, or enable <code>DEMO_MODE=true</code> for a local demo.
+          <strong>Mode: Actual TextBee — credentials required.</strong>
+          Demo mode is off (correct for live demos). Add <code>TEXTBEE_API_KEY</code>
+          (and optionally <code>TEXTBEE_DEVICE_ID</code>) to <code>.env</code>, then restart the server.
+          Until then, sends will fail with a configuration error (they will not be simulated).
         </div>
       {% endif %}
 
@@ -56,7 +67,7 @@
 
     <footer class="site-footer">
       <div class="container">
-        <p>IT 120 – Integrative Programming and Technologies · Django Web Application for Sending SMS (Twilio)</p>
+        <p>IT 120 – Integrative Programming and Technologies · Django Web Application for Sending SMS (TextBee)</p>
       </div>
     </footer>
   </div>

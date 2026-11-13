@@ -2,7 +2,7 @@
 Django settings for sms_project.
 
 Credentials and secrets are loaded from environment variables via python-dotenv.
-Never hardcode Twilio credentials or SECRET_KEY in source control.
+Never hardcode TextBee credentials or SECRET_KEY in source control.
 """
 
 from pathlib import Path
@@ -13,7 +13,8 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load .env from project root (if present). Missing file is fine for CI/demo.
-load_dotenv(BASE_DIR / ".env")
+# override=True so updated .env values win over stale shell env vars.
+load_dotenv(BASE_DIR / ".env", override=True)
 
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-dev-only-change-me")
 
@@ -26,12 +27,13 @@ if DEBUG and "testserver" not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append("testserver")
 
 
-# Twilio (never expose these in templates or user-facing errors)
-TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID", "").strip()
-TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN", "").strip()
-TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER", "").strip()
+# TextBee SMS gateway (never expose these in templates or user-facing errors)
+TEXTBEE_BASE_URL = os.getenv("TEXTBEE_BASE_URL", "https://api.textbee.dev/api/v1").strip().rstrip("/")
+TEXTBEE_API_KEY = os.getenv("TEXTBEE_API_KEY", "").strip()
+TEXTBEE_DEVICE_ID = os.getenv("TEXTBEE_DEVICE_ID", "").strip()
 
-# When True, validate normally and record a simulated queued send (no Twilio API call).
+# Opt-in only. Default is Actual Mode (false): real TextBee API when credentials exist.
+# DEMO_MODE=true simulates sends for offline development; it never replaces live sending.
 DEMO_MODE = os.getenv("DEMO_MODE", "false").lower() in ("1", "true", "yes", "on")
 
 INSTALLED_APPS = [
@@ -66,7 +68,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "sms_app.context_processors.twilio_status",
+                "sms_app.context_processors.provider_status",
             ],
         },
     },

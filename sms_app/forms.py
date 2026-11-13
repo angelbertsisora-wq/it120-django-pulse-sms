@@ -51,4 +51,9 @@ class SMSForm(forms.Form):
         value = (self.cleaned_data.get("message") or "").strip()
         if not value:
             raise forms.ValidationError("Message is required.")
+        if len(value) > 1600:
+            raise forms.ValidationError(
+                "Message is too long (maximum 1600 characters)."
+            )
         return value
+
