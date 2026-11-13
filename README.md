@@ -16,8 +16,8 @@ A Django web app that lets a user enter a recipient phone number and message, va
 
 | Member | Responsibilities |
 |--------|------------------|
-| **Irvin O. Demonguitan** | Django project setup, views, URLs, application logic, SMS provider integration |
-| **Angelbert M. Sisora** | UI, forms, validation, user feedback, testing, documentation, demonstration |
+| **Irvin O. Demonguitan** | UI, forms, validation, user feedback, testing, documentation, demonstration |
+| **Angelbert M. Sisora** | Django project setup, views, URLs, application logic, SMS provider integration |
 
 ---
 
