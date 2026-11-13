@@ -14,9 +14,8 @@ A Django web app that lets a user enter a recipient phone number and message, va
 
 | Member | Responsibilities |
 |--------|------------------|
-| **Member 1** *(replace with name)* | Django project setup, views, URLs, application logic |
-| **Member 2** *(replace with name)* | UI, forms, validation, user feedback |
-| **Member 3** *(replace with name)* | Twilio integration, testing, documentation, demonstration |
+| **Irvin O. Demonguitan** | Django project setup, views, URLs, application logic, Twilio integration |
+| **Angelbert M. Sisora** | UI, forms, validation, user feedback, testing, documentation, demonstration |
 
 ---
 
@@ -217,20 +216,20 @@ Please find attached / linked our group submission for IT 120
 Title: Django Web Application for Sending SMS (Twilio)
 
 Group members:
-- Member 1: [Full Name] — Django project setup, views, URLs, application logic
-- Member 2: [Full Name] — UI, forms, validation, user feedback
-- Member 3: [Full Name] — Twilio integration, testing, documentation, demonstration
+- Irvin O. Demonguitan — Django project setup, views, URLs, application logic, Twilio integration
+- Angelbert M. Sisora — UI, forms, validation, user feedback, testing, documentation, demonstration
 
-Repository / drive link: [paste link here]
+Repository / drive link: https://github.com/angelbertsisora-wq/it120-django-twilio-sms
 
 Thank you.
 
 Respectfully,
-[Group / section]
+Irvin O. Demonguitan
+Angelbert M. Sisora
 ```
 
 ---
 
 ## License / academic use
 
-Prepared for IT 120 laboratory/group assignment use. Replace member name placeholders before final submission.
+Prepared for IT 120 laboratory/group assignment use.
