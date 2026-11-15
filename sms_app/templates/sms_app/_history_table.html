@@ -1,41 +1,35 @@
 {% if history %}
-  <div class="table-responsive history-wrap">
-    <table class="table history-table align-middle mb-0">
-      <thead>
-        <tr>
-          <th scope="col">When</th>
-          <th scope="col">To</th>
-          <th scope="col">Message</th>
-          <th scope="col">Mode</th>
-          <th scope="col">Status</th>
-          <th scope="col">SID / Error</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in history %}
-          <tr>
-            <td class="mono nowrap">{{ item.created_at|date:"Y-m-d H:i" }}</td>
-            <td class="mono">{{ item.to_number }}</td>
-            <td class="msg-cell">{{ item.body|truncatechars:80 }}</td>
-            <td>
-              {% if item.is_demo %}
-                <span class="mode-pill mode-demo">Demo</span>
-              {% else %}
-                <span class="mode-pill mode-live">Actual</span>
-              {% endif %}
-            </td>
-            <td>
-              <span class="status-pill status-{{ item.status }}">{{ item.get_status_display }}</span>
-            </td>
-            <td class="mono detail-cell">
-              {% if item.twilio_sid %}<div>{{ item.twilio_sid }}</div>{% endif %}
-              {% if item.error_detail %}<div class="error-text">{{ item.error_detail }}</div>{% endif %}
-              {% if not item.twilio_sid and not item.error_detail %}—{% endif %}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="history-list">
+    {% for item in history %}
+      <article class="history-item">
+        <div class="history-item-top">
+          <div class="history-item-meta">
+            <time class="mono" datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:"Y-m-d H:i" }}</time>
+            <span class="mono history-to">{{ item.to_number }}</span>
+          </div>
+          <div class="history-item-badges">
+            {% if item.is_demo %}
+              <span class="mode-pill mode-demo">Demo</span>
+            {% else %}
+              <span class="mode-pill mode-live">Actual</span>
+            {% endif %}
+            <span class="status-pill status-{{ item.status }}">{{ item.get_status_display }}</span>
+          </div>
+        </div>
+        <p class="history-item-body">{{ item.body|truncatechars:120 }}</p>
+        <div class="history-item-foot mono">
+          {% if item.twilio_sid %}
+            <span class="sid-text" title="{{ item.twilio_sid }}">ID: {{ item.twilio_sid|truncatechars:36 }}</span>
+          {% endif %}
+          {% if item.error_detail %}
+            <span class="error-text" title="{{ item.error_detail }}">{{ item.error_detail|truncatechars:140 }}</span>
+          {% endif %}
+          {% if not item.twilio_sid and not item.error_detail %}
+            <span class="muted-dash">—</span>
+          {% endif %}
+        </div>
+      </article>
+    {% endfor %}
   </div>
 {% else %}
   <div class="empty-state">
